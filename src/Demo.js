@@ -1,9 +1,14 @@
 
 import React from "react"
+import AutoCompleteInput from "./components/AutoCompleteInput"
 
 class Demo extends React.Component {
   render() {
-    return <h1>Deel Frontend Demo</h1>;
+    return (<div>
+      <h1>Deel Frontend Demo</h1>
+      <AutoCompleteInput suggestions={["Sandwich", "Fried Egg", "Cheetos", "Beer"]} />
+    </div>
+    );
   }
 }
 
