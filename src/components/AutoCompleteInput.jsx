@@ -11,7 +11,7 @@ class Autocomplete extends React.Component {
             suggestions: [],
             input: "",
             timeOut: {},
-            apiLoaded: false
+            apiLoaded: false,
         };
     }
 
@@ -42,15 +42,29 @@ class Autocomplete extends React.Component {
     }
 
 
-    onClick = e => {
+    onMouseDown = e => {
         const input = e.currentTarget.innerText
         this.setState({
             suggestionIndex: 0,
             showList: false,
-            suggestions: [],
             input,
         });
     };
+
+    onBlur = () => {
+        this.setState({
+            suggestionIndex: 0,
+            showList: false,
+        });
+    }
+
+    onFocus = () => {
+        const { input } = this.state
+        this.setState({
+            suggestionIndex: 0,
+            showList: !!input,
+        });
+    }
 
     onChange = async e => {
         const { timeOut, apiLoaded } = this.state
@@ -128,7 +142,7 @@ class Autocomplete extends React.Component {
     };
 
     render() {
-        const { onClick, onChange, onKeyDown, state } = this;
+        const { onMouseDown, onChange, onKeyDown, onBlur, onFocus, state } = this;
         const {
             suggestionIndex,
             showList,
@@ -142,10 +156,12 @@ class Autocomplete extends React.Component {
                     type="text"
                     onChange={onChange}
                     onKeyDown={onKeyDown}
+                    onBlur={onBlur}
+                    onFocus={onFocus}
                     value={input}
                 />
                 <SuggestionList
-                    onClick={onClick}
+                    onMouseDown={onMouseDown}
                     suggestions={suggestions}
                     index={suggestionIndex}
                     input={input}

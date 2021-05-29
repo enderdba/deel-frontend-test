@@ -13,7 +13,7 @@ class SuggestionList extends React.Component {
 
     render() {
         const { props } = this;
-        const { suggestions, show, input, onClick, index: activeSuggestion } = props;
+        const { suggestions, show, input, onMouseDown, index: activeSuggestion } = props;
 
         if (show && input) {
             if (suggestions.length) {
@@ -25,7 +25,7 @@ class SuggestionList extends React.Component {
                                 className = "suggestion-active";
                             }
                             return (
-                                <li className={className} key={suggestion} onClick={onClick}>
+                                <li className={className} key={suggestion} onMouseDown={onMouseDown}>
                                     {this.getHighlightedText(suggestion, input)}
                                 </li>
                             );
