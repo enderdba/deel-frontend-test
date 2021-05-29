@@ -35,6 +35,10 @@ input {
     padding: 0.5rem;
 }
 
+.suggestions-list li span.highlight{
+    background-color: yellow;
+}
+
 .suggestion-active,
 .suggestions-list li:hover {
     background-color: #c6cccb;

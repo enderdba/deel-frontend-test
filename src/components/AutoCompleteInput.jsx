@@ -1,5 +1,7 @@
 import React from "react";
 import SuggestionList from "./SuggestionList"
+import { realFetch, magicFetch } from "../utils/magicFetch"
+
 class Autocomplete extends React.Component {
     constructor(props) {
         super(props);
@@ -7,9 +9,38 @@ class Autocomplete extends React.Component {
             suggestionIndex: 0,
             showList: false,
             suggestions: [],
-            input: ""
+            input: "",
+            timeOut: {},
+            apiLoaded: false
         };
     }
+
+    async componentDidUpdate(prevProps) {
+        const { source } = this.props;
+        const { input } = this.state;
+
+        if (source !== prevProps.source) {
+            this.setState({ apiLoaded: false, showList: false, suggestions: [] })
+            if (source === "json") {
+                const filtered = await magicFetch(input, source)
+                this.setState({
+                    suggestionIndex: 0,
+                    showList: true,
+                    suggestions: filtered,
+                });
+            } else {
+                const filtered = await realFetch(input, source)
+                this.setState({
+                    suggestionIndex: 0,
+                    showList: true,
+                    suggestions: filtered,
+                    apiLoaded: true
+                });
+            }
+            return false;
+        }
+    }
+
 
     onClick = e => {
         const input = e.currentTarget.innerText
@@ -21,21 +52,51 @@ class Autocomplete extends React.Component {
         });
     };
 
-    onChange = e => {
-        debugger;
-        const { suggestions } = this.props;
+    onChange = async e => {
+        const { timeOut, apiLoaded } = this.state
+        const { source } = this.props
         const input = e.currentTarget.value;
-        const filtered = suggestions.filter(
-            suggestion =>
-                suggestion.toLowerCase().indexOf(input.toLowerCase()) > -1
-        )
+        const context = this;
 
         this.setState({
-            suggestionIndex: 0,
-            showList: true,
-            suggestions: filtered,
             input,
+            showList: false
         });
+
+        if (input && source === "json") {
+            //this is a way for limiting API calls based on time between inputs
+            //there should be a better way depending on how the autocompletion works, best way is to bring a fixed amount (like on API call example)
+            //of options from API, so we don't have to do an API call each time an input is called.
+            //if there's a lot of data coming from API we would have to virtualize or use this hack for it.
+            clearTimeout(timeOut)
+            this.setState({
+                timeOut: setTimeout(async function () {
+                    const filtered = await magicFetch(input, source)
+                    context.setState({
+                        suggestionIndex: 0,
+                        showList: true,
+                        suggestions: filtered,
+                    });
+                }, 300)
+            }
+            )
+        } else if (input && source === "api") {
+            if (!apiLoaded) {
+                const filtered = await realFetch(input, source)
+                context.setState({
+                    suggestionIndex: 0,
+                    showList: true,
+                    suggestions: filtered,
+                    apiLoaded: true
+                });
+            }
+            else {
+                context.setState({
+                    suggestionIndex: 0,
+                    showList: true,
+                });
+            }
+        }
     }
 
     onKeyDown = e => {

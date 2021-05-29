@@ -12,6 +12,7 @@ Run `npm start` or `yarn start` after the dependencies are installed.
 
 Go to `localhost:3000` in your favorite web browser.
 
+Notes: You can see the "ficticious" calls in the console.
 Ender Bohórquez 2021
 
 This project is solely intended for demo purposes.

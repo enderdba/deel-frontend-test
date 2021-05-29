@@ -2,15 +2,23 @@ import React from "react";
 
 class SuggestionList extends React.Component {
 
+    getHighlightedText(text, highlight) {
+        const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+        return <span> {parts.map((part, i) =>
+            <span key={i} className={part.toLowerCase() === highlight.toLowerCase() ? "highlight" : ""}>
+                {part}
+            </span>)
+        } </span>;
+    }
+
     render() {
         const { props } = this;
         const { suggestions, show, input, onClick, index: activeSuggestion } = props;
 
         if (show && input) {
-            debugger;
             if (suggestions.length) {
                 return (
-                    <ul class="suggestions-list">
+                    <ul className="suggestions-list">
                         {suggestions.map((suggestion, index) => {
                             let className;
                             if (index === activeSuggestion) {
@@ -18,7 +26,7 @@ class SuggestionList extends React.Component {
                             }
                             return (
                                 <li className={className} key={suggestion} onClick={onClick}>
-                                    {suggestion}
+                                    {this.getHighlightedText(suggestion, input)}
                                 </li>
                             );
                         })}
@@ -26,7 +34,7 @@ class SuggestionList extends React.Component {
                 );
             } else {
                 return (
-                    <div class="suggestions-not-available">
+                    <div className="suggestions-not-available">
                         <b>No suggestions available for the moment.</b>
                     </div>
                 );
