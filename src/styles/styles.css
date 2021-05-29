@@ -1,0 +1,50 @@
+body {
+    font-family: sans-serif;
+}
+
+.demobox {
+    padding: 1em;
+    background-color: rgb(171, 221, 216);
+    margin: 1em 3em;
+    border-radius: 0.2em;
+}
+
+input {
+    border: 1px solid #999;
+    padding: 0.5rem;
+}
+
+.auto-complete {
+    position: relative;
+    text-align: left;
+}
+
+.suggestions-list {
+    position: absolute;
+    left: 0;
+    border: 1px solid #999;
+    background-color:whitesmoke;
+    list-style: none;
+    margin-top: 0;
+    max-height: 143px;
+    overflow-y: auto;
+    padding-left: 0;
+}
+
+.suggestions-list li {
+    padding: 0.5rem;
+}
+
+.suggestion-active,
+.suggestions-list li:hover {
+    background-color: #c6cccb;
+    cursor: pointer;
+}
+
+.suggestions-list li:not(:last-of-type) {
+    border-bottom: 1px solid #999;
+}
+
+.suggestions-not-available {
+    padding: 0.5rem;
+}

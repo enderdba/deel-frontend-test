@@ -45,8 +45,8 @@ class Autocomplete extends React.Component {
         if (keyCode === 13) {
             this.setState({
                 suggestionIndex: 0,
-                showSuggestions: false,
-                userInput: suggestions[suggestionIndex]
+                showList: false,
+                input: suggestions[suggestionIndex]
             });
         }
         // check on "Down Arrow" key to choose a different selection
@@ -76,7 +76,7 @@ class Autocomplete extends React.Component {
         } = state
 
         return (
-            <>
+            <div className="auto-complete">
                 <input
                     type="text"
                     onChange={onChange}
@@ -90,7 +90,7 @@ class Autocomplete extends React.Component {
                     input={input}
                     show={showList}
                 />
-            </>
+            </div>
         );
     }
 
