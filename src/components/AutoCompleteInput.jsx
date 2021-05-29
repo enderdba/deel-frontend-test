@@ -41,8 +41,8 @@ class Autocomplete extends React.Component {
     onKeyDown = e => {
         const { suggestionIndex, suggestions } = this.state;
         const { keyCode } = e
-        //check on "Enter" key to select the first suggestion
-        if (keyCode === 13) {
+        //check on "Enter" or "Tab" key to select the first suggestion
+        if (keyCode === 13 || keyCode === 9) {
             this.setState({
                 suggestionIndex: 0,
                 showList: false,
@@ -51,7 +51,7 @@ class Autocomplete extends React.Component {
         }
         // check on "Down Arrow" key to choose a different selection
         else if (keyCode === 40) {
-            if (suggestionIndex - 1 === suggestions.length) {
+            if (suggestionIndex + 1 === suggestions.length) {
                 return;
             }
             this.setState({ suggestionIndex: suggestionIndex + 1 });
